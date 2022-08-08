@@ -21,7 +21,7 @@ from feedgen.feed import FeedGenerator
 
 
 proxy_uri = "http://127.0.0.1:7890"
-enable_proxy = True
+enable_proxy = False
 
 
 dmhy_base_uri = "https://share.dmhy.org"
