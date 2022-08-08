@@ -61,10 +61,10 @@ def mod(mod):
         return render_template(
             'error.html',
             title='Error',
-            subtitle='找不到调用模块',
+            subtitle='无法载入指定的模块程序文件',
             mod=mod,
             func='',
-            content='找不到指定的调用模块程序文件。'
+            content=format_exc()
         )
     return render_template(
         'mod_info.html',
@@ -82,10 +82,10 @@ def service(mod, func):
         return render_template(
             'error.html',
             title='Error',
-            subtitle='找不到调用模块',
+            subtitle='无法载入指定的模块程序文件',
             mod=mod,
             func=func,
-            content='找不到指定的调用模块程序文件。'
+            content=format_exc()
         ), 404
     if hasattr(obj, func):
         f = getattr(obj, func)
@@ -129,11 +129,11 @@ def service_with_path(mod, func, route):
         return render_template(
             'error.html',
             title='Error',
-            subtitle='找不到调用模块',
+            subtitle='无法载入指定的模块程序文件',
             mod=mod,
             func=func,
             route=route,
-            content='找不到指定的调用模块程序文件。'
+            content=format_exc()
         ), 404
     if hasattr(obj, func):
         f = getattr(obj, func)
