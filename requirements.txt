@@ -1,5 +1,5 @@
 flask
 requests
-bs4
+pyquery
 arrow
 feedgen
