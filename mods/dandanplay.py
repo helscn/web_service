@@ -59,23 +59,23 @@ def parse_rss(tr, feed):
     tds = tr.find('td')
 
     feed.pubDate(tds.eq(0).find('span').text()+' +0800')
-    link0 = tds.eq(1).find('a:first')
+    link0 = tds.eq(1).find('a').eq(0)
     feed.category({
         'term': link0.attr['href'][-1:],
         'scheme': dmhy_base_uri+link0.attr['href'],
         'label': link0.text().strip()
     })
-    link1 = tds.eq(2).find('a:last')
+
+    link1 = tds.eq(2).find('a').eq(-1)
     url = dmhy_base_uri+link1.attr['href']
     feed.title(link1.text())
     feed.link(href=url)
-    feed.guid(url)
+    feed.guid(url, permalink=True)
 
-    link2 = tds.eq(3).find('a:first')
+    link2 = tds.eq(3).find('a').eq(0)
     size = convert_size(tds.eq(4).text().strip())
     feed.enclosure(url=link2.attr['href'], length=str(
         size), type='application/x-bittorrent')
-
     feed.author({'name': tds.eq(8).text().strip()})
     return feed
 
@@ -83,7 +83,7 @@ def parse_rss(tr, feed):
 def parse_list_tr(tr):
     global dmhy_base_uri, unknown_subgroup_id, unknown_subgroup_name
     tds = tr.find('td')
-    td1_a0 = tds.eq(1).find('a:first')
+    td1_a0 = tds.eq(1).find('a').eq(0)
     td2_a = tds.eq(2).find('a')
     link = td2_a.eq(-1)
     c1 = len(td2_a)
@@ -94,10 +94,10 @@ def parse_list_tr(tr):
         "TypeName": td1_a0.text().strip(),
         "SubgroupId": unknown_subgroup_id if c1 != 2 else int(td2_a.eq(0).attr['href'].replace("/topics/list/team_id/", "")),
         "SubgroupName": unknown_subgroup_name if c1 != 2 else td2_a.eq(0).text().strip(),
-        "Magnet": tds.eq(3).find('a:first').attr["href"],
+        "Magnet": tds.eq(3).find('a').eq(0).attr["href"],
         "PageUrl": dmhy_base_uri + link.attr["href"],
         "FileSize": tds.eq(4).text().strip(),
-        "PublishDate": arrow.get(tds.eq(0).find("span:first").text().strip()).format("YYYY-MM-DD HH:mm:ss")
+        "PublishDate": arrow.get(tds.eq(0).find("span").eq(0).text().strip()).format("YYYY-MM-DD HH:mm:ss")
     }
 
 
